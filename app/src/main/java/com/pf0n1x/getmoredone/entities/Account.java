@@ -6,11 +6,11 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import com.pf0n1x.getmoredone.util.DateConverter;
+//import com.pf0n1x.getmoredone.util.DateConverter;
 
 // TODO: Implement account DAO
 @Entity(tableName = "account_table")
-@TypeConverters(DateConverter.class)
+//@TypeConverters(DateConverter.class)
 public class Account {
 
     // Data Members

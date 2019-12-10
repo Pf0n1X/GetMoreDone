@@ -1,57 +1,43 @@
 package com.pf0n1x.getmoredone.entities;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-import com.pf0n1x.getmoredone.util.DateConverter;
-import com.pf0n1x.getmoredone.util.TimeConverter;
-import java.sql.Time;
-import java.util.Date;
 
-// TODO: Implement mission DAO
-@Entity(tableName = "task_table")
+import com.google.firebase.database.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class Task {
 
     // Data Members;
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-
-    @NonNull
-    @ColumnInfo(name = "title")
+    private String id;
+    private String uid;
     private String title;
-
-    @ColumnInfo(name = "description")
     private String description;
-
-    @ColumnInfo(name = "creation_date")
-    private Date creation_date;
-
-    @ColumnInfo(name = "start_date")
-    private Date start_date;
-
-    @ColumnInfo(name = "end_date")
-    private Date end_date;
-
-    @ColumnInfo(name = "start_time")
-    private Time start_time;
-
-    @ColumnInfo(name = "end_time")
-    private Time end_time;
-
-    @ColumnInfo (name = "is_done")
+    private long creation_date;
+    private long start_date;
+    private long end_date;
+    private String start_time;
+    private String end_time;
     private boolean is_done;
 
+    // Constructors
+
+    /*
+        This empty constructor is needed for read operations from firebase.
+     */
+    public Task() {
+
+    }
+
     public Task(@NonNull String title,
+                @NonNull String uid,
                 String description,
-                Date creation_date,
-                Date start_date,
-                Date end_date,
-                Time start_time,
-                Time end_time,
+                long creation_date,
+                long start_date,
+                long end_date,
+                String start_time,
+                String end_time,
                 boolean is_done) {
+        this.uid = uid;
         this.title = title;
         this.description = description;
         this.creation_date = creation_date;
@@ -62,17 +48,18 @@ public class Task {
         this.is_done = is_done;
     }
 
-    @Ignore
-    public Task(int id,
+    public Task(String id,
                 @NonNull String title,
+                @NonNull String uid,
                 String description,
-                Date creation_date,
-                Date start_date,
-                Date end_date,
-                Time start_time,
-                Time end_time,
+                long creation_date,
+                long start_date,
+                long end_date,
+                String start_time,
+                String end_time,
                 boolean is_done) {
         this.id = id;
+        this.uid = uid;
         this.title = title;
         this.description = description;
         this.creation_date = creation_date;
@@ -84,8 +71,12 @@ public class Task {
     }
 
     // Getters
-    public int getId() {
+    public String getId() {
         return this.id;
+    }
+
+    public String getUid() {
+        return this.uid;
     }
 
     public String getTitle() {
@@ -96,25 +87,35 @@ public class Task {
         return this.description;
     }
 
-    public Date getCreation_date() {
+    public long getCreation_date() {
         return this.creation_date;
     }
 
-    public Date getStart_date() { return this.start_date; }
+    public long getStart_date() {
+        return this.start_date;
+    }
 
-    public Date getEnd_date() { return this.end_date; }
+    public long getEnd_date() {
+        return this.end_date;
+    }
 
-    public Time getStart_time() {
+    public String getStart_time() {
         return this.start_time;
     }
 
-    public Time getEnd_time() {
+    public String getEnd_time() {
         return this.end_time;
     }
     public boolean getIs_done() { return this.is_done; }
 
     // Setters
-    public void setId(@NonNull int id) { this.id = id; }
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    public void setUid(@NonNull String uid) {
+        this.uid = uid;
+    }
 
     public void setTitle(@NonNull String title) {
         this.title = title;
@@ -124,23 +125,23 @@ public class Task {
         this.description = description;
     }
 
-    public void setCreation_date(Date creation_date) {
+    public void setCreation_date(long creation_date) {
         this.creation_date = creation_date;
     }
 
-    public void setStart_date(Date start_date) {
+    public void setStart_date(long start_date) {
         this.start_date = start_date;
     }
 
-    public void setEnd_date(Date end_date) {
+    public void setEnd_date(long end_date) {
         this.end_date = end_date;
     }
 
-    public void setStart_time(Time start_time) {
+    public void setStart_time(String start_time) {
         this.start_time = start_time;
     }
 
-    public void setEnd_time(Time end_time) {
+    public void setEnd_time(String end_time) {
         this.end_time = end_time;
     }
     public void setIs_done(boolean is_done) { this.is_done = is_done; }

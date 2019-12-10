@@ -9,8 +9,10 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.pf0n1x.getmoredone.entities.Task;
-import com.pf0n1x.getmoredone.view_models.TaskViewModel;
+//import com.pf0n1x.getmoredone.view_models.TaskViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,7 +28,7 @@ public class NewTaskActivity extends AppCompatActivity {
     private EditText mEndDateEditText;
     private EditText mTitleEditText;
     private EditText mDescriptionEditText;
-    private TaskViewModel mTaskViewModel;
+//    private TaskViewModel mTaskViewModel;
 
     // Constant Members
     final Calendar mCalendar = Calendar.getInstance();
@@ -41,7 +43,7 @@ public class NewTaskActivity extends AppCompatActivity {
         mEndDateEditText = findViewById(R.id.edit_text_na_end_date); // TODO: Add getters
         mTitleEditText = findViewById(R.id.edit_text_na_title);
         mDescriptionEditText = findViewById(R.id.edit_text_na_desc);
-        mTaskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
+//        mTaskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
 
         // Set the clickListeners
         final DatePickerDialog.OnDateSetListener startDateListener = new DatePickerDialog.OnDateSetListener() {
@@ -103,19 +105,37 @@ public class NewTaskActivity extends AppCompatActivity {
 
         // TODO: Add validation checks for all the fields
 
-
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = database.getReference("tasks");
         try {
-            mTaskViewModel.insert(new Task(mTitleEditText.getText().toString(),
+            DatabaseReference newTaskRef = dbRef.push();
+            newTaskRef.setValue(new Task(
+                    newTaskRef.getKey(),
+                    mTitleEditText.getText().toString(),
+                    "1",
                     mDescriptionEditText.getText().toString(),
-                    new Date(System.currentTimeMillis()),
-                    dateFormat.parse(mStartDateEditText.getText().toString()),
-                    dateFormat.parse(mEndDateEditText.getText().toString()),
-                    new Time(System.currentTimeMillis()), // TODO: Add real time
-                    new Time(System.currentTimeMillis()), // TODO: Add real time
-            false));
+                    System.currentTimeMillis(),
+                    dateFormat.parse(mStartDateEditText.getText().toString()).getTime(),
+                    dateFormat.parse(mEndDateEditText.getText().toString()).getTime(),
+                    (new Time(System.currentTimeMillis())).toString(), // TODO: Add real time
+                    (new Time(System.currentTimeMillis())).toString(), // TODO: Add real time
+                    false));
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+//        try {
+//            mTaskViewModel.insert(new Task(mTitleEditText.getText().toString(),
+//                    mDescriptionEditText.getText().toString(),
+//                    new Date(System.currentTimeMillis()),
+//                    dateFormat.parse(mStartDateEditText.getText().toString()),
+//                    dateFormat.parse(mEndDateEditText.getText().toString()),
+//                    new Time(System.currentTimeMillis()), // TODO: Add real time
+//                    new Time(System.currentTimeMillis()), // TODO: Add real time
+//            false));
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
         // Return to the previous activity.
         finish();

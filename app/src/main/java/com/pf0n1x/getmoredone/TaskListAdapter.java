@@ -7,12 +7,11 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
-import com.pf0n1x.getmoredone.entities.Task;
-import com.pf0n1x.getmoredone.view_models.TaskViewModel;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.pf0n1x.getmoredone.entities.Task;
 import java.util.List;
 
 // TODO: Add task deletion.
@@ -23,12 +22,13 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     private final LayoutInflater mInflater;
     private List<Task> mTasks; // A cached copy of the tasks
     private static ClickListener clickListener; // TODO: Delete unused variable
-    private TaskViewModel mTaskViewModel;
+
+    // Constant Members
+    private final FirebaseDatabase mDb = FirebaseDatabase.getInstance();
 
     // Constructors
     public TaskListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
-        mTaskViewModel = ViewModelProviders.of((FragmentActivity)context).get(TaskViewModel.class);
     }
 
     @NonNull
@@ -95,10 +95,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                     boolean isChecked = taskItemCheckBox.isChecked();
 
                     // Update the entity accordingly.
-                    mTasks.get(getAdapterPosition()).setIs_done(isChecked); // TODO: Figure out how to change it in the database
+                    mTasks.get(getAdapterPosition()).setIs_done(isChecked);
 
                    // Update the entity in the DB
-                    mTaskViewModel.updateTask(mTasks.get(getAdapterPosition()));
+                    DatabaseReference usersDBRef = mDb.getReference("tasks");
+                    usersDBRef
+                            .child(mTasks.get(getAdapterPosition()).getId())
+                            .child("is_done")
+                            .setValue(mTasks.get(getAdapterPosition()).getIs_done());
 
                     // Notify the RecyclerView about the update.
                     notifyDataSetChanged();

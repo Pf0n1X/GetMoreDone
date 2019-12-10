@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "502522710553",
+    "firebase_url": "https://get-more-done-70013.firebaseio.com",
+    "project_id": "get-more-done-70013",
+    "storage_bucket": "get-more-done-70013.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502522710553:android:f3844c79abd2204246b888",
+        "android_client_info": {
+          "package_name": "com.pf0n1x.getmoredone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502522710553-jqdf4eg6kr1b9qin62dnf3sjqlljjkc4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pf0n1x.getmoredone",
+            "certificate_hash": "bb75f6d558a20b81dcd2b954b29dca4cd105f3e5"
+          }
+        },
+        {
+          "client_id": "502522710553-9pgrlk3lqe46aaimk5np4rnl7eiethvm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXRb4RH76gY2D4Lxf10bLxKIEROKx5nDA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502522710553-9pgrlk3lqe46aaimk5np4rnl7eiethvm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

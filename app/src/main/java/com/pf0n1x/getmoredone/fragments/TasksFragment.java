@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -131,7 +132,11 @@ public class TasksFragment extends Fragment {
             }
         };
 
-        mDatesRef = FirebaseDatabase.getInstance().getReference("tasks");
+        mDatesRef = FirebaseDatabase
+                .getInstance()
+                .getReference("users/"
+                        + FirebaseAuth.getInstance().getCurrentUser().getUid()
+                        + "/tasks");
         mDatesRef.orderByChild("start_date")
                 .endAt(mCurShownDate.getTime())
                 .addChildEventListener(mTaskEventListener);

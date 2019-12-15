@@ -1,87 +1,103 @@
 package com.pf0n1x.getmoredone.entities;
 
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-//import com.pf0n1x.getmoredone.util.DateConverter;
-
-// TODO: Implement account DAO
-@Entity(tableName = "account_table")
-//@TypeConverters(DateConverter.class)
 public class Account {
 
     // Data Members
-    @NonNull
-    @PrimaryKey(autoGenerate = false)
-    private String user_name;
-
-    @ColumnInfo(name = "first_name")
-    private String first_name;
-
-    @ColumnInfo(name = "last_name")
-    private String last_name;
-
-    @ColumnInfo(name = "experience")
-    private int experience;
-
-    @ColumnInfo(name = "level")
-    private int level;
+    private String uid;
+    private String name;
+    private int weeklyExperience; // represents weekly experience
+    private String email;
+    private int league; // TODO: Move this to an enum representing a league/tier
+    private int weeklyGroup;
+    private int streak;
+    private int money;
 
     // Constructors
-    public Account(@NonNull String user_name,
-                   String first_name,
-                   String last_name,
-                   int experience,
-                   int level) {
-        this.user_name = user_name;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.experience = experience;
-        this.level = level;
+
+    /*
+       This empty constructor is needed for read operations from firebase.
+    */
+    public Account() {
+
+    }
+
+    public Account(String uid, String name, int weeklyExperience, String email, int league, int weeklyGroup, int streak, int money) {
+        this.uid = uid;
+        this.name = name;
+        this.weeklyExperience = weeklyExperience;
+        this.email = email;
+        this.league = league;
+        this.weeklyGroup = weeklyGroup;
+        this.streak = streak;
+        this.money = money;
     }
 
     // Getters
-    public String getUser_name() {
-        return user_name;
+    public String getUid() {
+        return this.uid;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getName() {
+        return name;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public int getWeeklyExperience() {
+
+        return weeklyExperience;
     }
 
-    public int getExperience() {
-        return experience;
+    public int getLeague() {
+
+        return league;
     }
 
-    public int getLevel() {
-        return level;
+    public int getWeeklyGroup() {
+        return weeklyGroup;
+    }
+
+    public int getStreak() {
+        return streak;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public int getMoney() {
+        return this.money;
     }
 
     // Setters
-    public void setUser_name(@NonNull String user_name) {
-        this.user_name = user_name;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setWeeklyExperience(int weeklyExperience) {
+        this.weeklyExperience = weeklyExperience;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLeague(int level) {
+
+        this.league = league;
     }
 
-    public void setExperience(int experience) {
-        this.experience = experience;
+    public void setWeeklyGroup(int weeklyGroup) {
+        this.weeklyGroup = weeklyGroup;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setStreak(int streak) {
+        this.streak = streak;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 }

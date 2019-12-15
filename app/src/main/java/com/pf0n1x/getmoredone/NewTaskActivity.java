@@ -102,7 +102,7 @@ public class NewTaskActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference dbRef =
                 database.getReference
-                        ("users/"
+                        ("user_collections/"
                                 + FirebaseAuth.getInstance().getCurrentUser().getUid()
                                 + "/tasks");
         try {

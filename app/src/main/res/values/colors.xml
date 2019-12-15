@@ -6,5 +6,6 @@
     <color name="colorTextMainOnPrimary">#000000</color>
     <color name="colorTextSubOnPrimary">#8f8f8f</color>
     <color name="colorMainBG">#f9f9f9</color>
-    <color name="colorInActiveMenuItem">#666666</color>
+    <color name="colorInactiveMenuItem">#666666</color>
+    <color name="colorActiveMenuItem">#FF4081</color>
 </resources>

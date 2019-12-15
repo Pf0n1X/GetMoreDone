@@ -14,6 +14,7 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.pf0n1x.getmoredone.fragments.LeaderboardFragment;
 import com.pf0n1x.getmoredone.fragments.ProfileFragment;
 import com.pf0n1x.getmoredone.fragments.StoreFragment;
 import com.pf0n1x.getmoredone.fragments.TasksFragment;
@@ -48,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_profile:
                     selectedFragment = new ProfileFragment();
+                    break;
+                case R.id.nav_leaderboard:
+                    selectedFragment = new LeaderboardFragment();
                     break;
             }
 

@@ -3,4 +3,8 @@
     <string name="nav_tasks_title">Tasks</string>
     <string name="nav_profile_title">Profile</string>
     <string name="nav_store_title">Store</string>
+    <string name="nav_leaderboard_title">Leaderboard</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

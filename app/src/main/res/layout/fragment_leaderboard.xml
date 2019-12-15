@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".fragments.LeaderboardFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:drawableTop="@drawable/ic_nav_leaderboard" />
+
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:drawableTop="@drawable/ic_nav_leaderboard" />
+
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:drawableTop="@drawable/ic_nav_leaderboard" />
+
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:drawableTop="@drawable/ic_nav_leaderboard" />
+
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:drawableTop="@drawable/ic_nav_leaderboard" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:text="Reach the end of the week while you're at the top of the leaderboard and advance to the next league." />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_leaderboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/leaderboard_item" />
+
+</LinearLayout>

@@ -20,15 +20,20 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <Button
-                android:id="@+id/streak_button"
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icons8_lightning_bolt_100" />
+
+            <TextView
+                android:id="@+id/textview_streak"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                style="?android:attr/borderlessButtonStyle"
-                android:drawableLeft="@drawable/ic_streak"
+                android:textSize="18dp"
+                android:textStyle="bold"
                 android:background="?attr/colorPrimary"
-                android:textColor="#D60001"/>
+                android:textColor="@color/black" />
 
             <com.skydoves.progressview.ProgressView
                 android:id="@+id/progressViewTasks"
@@ -73,8 +78,10 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|end"
+        android:backgroundTint="@color/colorMainBG"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        app:srcCompat="@drawable/ic_add_task" />
+        app:maxImageSize="69dp"
+        app:srcCompat="@drawable/icons8_add_100" />
 
 </RelativeLayout>

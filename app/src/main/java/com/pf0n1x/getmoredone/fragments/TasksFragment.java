@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TextView;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +36,7 @@ import com.pf0n1x.getmoredone.entities.Account;
 import com.pf0n1x.getmoredone.entities.Task;
 import com.skydoves.progressview.ProgressView;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,7 +53,7 @@ public class TasksFragment extends Fragment {
     private List<Task> mTaskList;
     private TaskListAdapter mAdapter;
     private ChildEventListener mTaskEventListener;
-    private Button mStreakButton;
+    private TextView mStreakButton;
 
     // Constant Members
     private final Calendar mCalendar = Calendar.getInstance();
@@ -67,7 +70,7 @@ public class TasksFragment extends Fragment {
         // Save the progress view.
         mProgressView = view.findViewById(R.id.progressViewTasks); // TODO: Define a setter
         mFABNewTask = view.findViewById(R.id.fab_new_task); // TODO: Define a setter
-        mStreakButton = view.findViewById(R.id.streak_button);
+        mStreakButton = view.findViewById(R.id.textview_streak);
         mContext = this.getContext(); // TODO: Check if it needs to be removed
         mTaskList = new LinkedList<Task>();
         mAdapter = new TaskListAdapter(this.getContext());
@@ -97,6 +100,7 @@ public class TasksFragment extends Fragment {
                 // user's progress
                 mProgressView.setProgress(progress);
                 mProgressView.setLabelText((int) progress + "% achieved.");
+                Collections.sort(mTaskList);
                 mAdapter.setTasks(mTaskList);
             }
 
@@ -110,6 +114,7 @@ public class TasksFragment extends Fragment {
                 // user's progress
                 mProgressView.setProgress(progress);
                 mProgressView.setLabelText((int) progress + "% achieved.");
+                Collections.sort(mTaskList);
                 mAdapter.setTasks(mTaskList);
             }
 

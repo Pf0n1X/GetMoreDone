@@ -1,6 +1,6 @@
 package com.pf0n1x.getmoredone.entities;
 
-public class Account {
+public class Account implements Comparable<Account> {
 
     // Data Members
     private String uid;
@@ -99,5 +99,17 @@ public class Account {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    @Override
+    public int compareTo(Account o) {
+        if (this.getWeeklyExperience() > o.getWeeklyExperience()) {
+            return -1;
+        }
+        if (this.getWeeklyExperience() == o.getWeeklyExperience()) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }

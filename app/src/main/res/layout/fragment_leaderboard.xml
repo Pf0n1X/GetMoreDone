@@ -6,50 +6,65 @@
     android:orientation="vertical"
     tools:context=".fragments.LeaderboardFragment">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
-
-            <EditText
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:drawableTop="@drawable/ic_nav_leaderboard" />
-
-            <EditText
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:drawableTop="@drawable/ic_nav_leaderboard" />
-
-            <EditText
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:drawableTop="@drawable/ic_nav_leaderboard" />
-
-            <EditText
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:drawableTop="@drawable/ic_nav_leaderboard" />
-
-            <EditText
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:drawableTop="@drawable/ic_nav_leaderboard" />
-        </LinearLayout>
-
-        <TextView
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:text="Reach the end of the week while you're at the top of the leaderboard and advance to the next league." />
-    </LinearLayout>
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/icons8_1st_100" />
+
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/icons8_1st_100" />
+
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/icons8_1st_100" />
+
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/icons8_1st_100" />
+
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/icons8_1st_100" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/advance_guidance"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_leaderboard"

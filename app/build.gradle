@@ -19,6 +19,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 apply plugin: 'com.android.application'
@@ -52,6 +55,7 @@ dependencies {
 
     // Custom components
     implementation "com.github.skydoves:progressview:1.0.3"
+    implementation 'com.github.f0ris.sweetalert:library:1.5.6'
 }
 
 apply plugin: 'com.google.gms.google-services'

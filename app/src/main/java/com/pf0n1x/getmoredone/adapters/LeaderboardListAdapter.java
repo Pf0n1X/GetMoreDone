@@ -6,13 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.pf0n1x.getmoredone.BR;
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.firebase.database.FirebaseDatabase;
 import com.pf0n1x.getmoredone.R;
 import com.pf0n1x.getmoredone.entities.Account;
-
 import java.util.List;
 
 public class LeaderboardListAdapter extends RecyclerView.Adapter<LeaderboardListAdapter.LeaderboardViewHolder> {
@@ -38,21 +39,19 @@ public class LeaderboardListAdapter extends RecyclerView.Adapter<LeaderboardList
     @NonNull
     @Override
     public LeaderboardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.leaderboard_item, parent, false);
-        return new LeaderboardListAdapter.LeaderboardViewHolder(itemView);
+        ViewDataBinding binding = DataBindingUtil.inflate(mInflater, R.layout.leaderboard_item, parent, false);
+        return new LeaderboardViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull LeaderboardViewHolder holder, int position) {
         if (mLeaderboard != null) {
             Account current = mLeaderboard.get(position);
-            holder.lbItemPosTextView.setText("" + (position + 1));
-            holder.lbItemNameTextView.setText(current.getName());
-            holder.lbItemExpTextView.setText(current.getWeeklyExperience() + " XP");
+            holder.bind(current, position);
         } else {
 
             // Covers the case of data not being ready yet.
-            holder.lbItemNameTextView.setText("No tasks yet... :)"); // TODO: Add and make a real text
+//            holder.lbItemNameTextView.setText("No tasks yet... :)"); // TODO: Add and make a real text
         }
     }
 
@@ -68,17 +67,19 @@ public class LeaderboardListAdapter extends RecyclerView.Adapter<LeaderboardList
     class LeaderboardViewHolder extends RecyclerView.ViewHolder {
 
         // Data Members
-        private final TextView lbItemPosTextView;
-        private final TextView lbItemNameTextView;
-        private final TextView lbItemExpTextView;
+        private ViewDataBinding dataBinding;
+        private TextView itemPositionTextView;
 
-        public LeaderboardViewHolder(@NonNull View itemView) {
-            super(itemView);
+        private LeaderboardViewHolder(final ViewDataBinding dataBinding) {
+            super(dataBinding.getRoot());
+            this.dataBinding = dataBinding;
+            itemPositionTextView = itemView.getRootView().findViewById(R.id.textview_lb_pos);
+        }
 
-            // Initialize the list item elements
-            lbItemPosTextView = itemView.findViewById(R.id.textview_lb_pos);
-            lbItemNameTextView = itemView.findViewById(R.id.textview_lb_name);
-            lbItemExpTextView = itemView.findViewById(R.id.textview_lb_exp);
+        public void bind(Account current, int position) {
+            this.dataBinding.setVariable(BR.account, current);
+            this.dataBinding.executePendingBindings();
+            itemPositionTextView.setText((position + 1) + "");
         }
     }
 }

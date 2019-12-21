@@ -1,22 +1,22 @@
 package com.pf0n1x.getmoredone.adapters;
-
 import android.content.Context;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.resources.TextAppearance;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.pf0n1x.getmoredone.BR;
 import com.pf0n1x.getmoredone.R;
 import com.pf0n1x.getmoredone.entities.Task;
 import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 // TODO: Add task deletion.
 // TODO: Add documentation.
@@ -26,6 +26,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     private final LayoutInflater mInflater;
     private List<Task> mTasks; // A cached copy of the tasks
     private static ClickListener clickListener;
+    private Context mContext;
 
     // Constant Members
     private final FirebaseDatabase mDb = FirebaseDatabase.getInstance();
@@ -33,33 +34,25 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     // Constructors
     public TaskListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
+        mContext = context;
     }
 
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.task, parent, false);
-        return new TaskViewHolder(itemView);
+        ViewDataBinding binding = DataBindingUtil.inflate(mInflater, R.layout.task, parent, false);
+        return new TaskViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         if (mTasks != null) {
             Task current = mTasks.get(position);
-            holder.taskItemTitleView.setText(current.getTitle()); // TODO: Update the rest of the item's attributes.
-            holder.taskItemSubTitleView.setText(current.getDescription());
-            holder.taskItemCheckBox.setChecked(current.getIs_done());
-
-            // Set the task as checked.
-            if (current.getIs_done()) {
-                holder.taskItemTitleView.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            } else {
-                holder.taskItemTitleView.setPaintFlags(0);
-            }
+            holder.bind(current);
         } else {
 
             // Covers the case of data not being ready yet.
-            holder.taskItemTitleView.setText("No tasks yet... :)"); // TODO: Add and make a real text
+//            holder.taskItemTitleView.setText("No tasks yet... :)"); // TODO: Add and make a real text
         }
     }
 
@@ -80,16 +73,13 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     class TaskViewHolder extends RecyclerView.ViewHolder {
 
         // Data Members
-        private final TextView taskItemTitleView;
-        private final TextView taskItemSubTitleView; // TODO: Add the rest of the item's attributes
         private final CheckBox taskItemCheckBox;
+        private ViewDataBinding dataBinding;
 
-        private TaskViewHolder(View itemView) {
-            super(itemView);
-            taskItemTitleView = itemView.findViewById(R.id.task_title);
-            taskItemSubTitleView = itemView.findViewById(R.id.task_sub_title);
+        private TaskViewHolder(final ViewDataBinding dataBinding) {
+            super(dataBinding.getRoot());
+            this.dataBinding = dataBinding;
             taskItemCheckBox = itemView.findViewById(R.id.checkBox);
-
             itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -107,15 +97,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
                     // Set the strikethrough according to the checkbox.
                     if (isChecked) {
-                        taskItemTitleView.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                    } else {
-                        taskItemTitleView.setPaintFlags(0);
+                        new SweetAlertDialog(mContext).show();
+                        // TODO: retrieve user data and experience and update the user's exp in the db
                     }
 
                     // Update the entity accordingly.
                     mTasks.get(getAdapterPosition()).setIs_done(isChecked);
 
-                   // Update the entity in the DB
+                    // Update the entity in the DB
                     DatabaseReference usersDBRef =
                             mDb.getReference
                                     ("user_collections/"
@@ -127,13 +116,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                             .child(mTasks.get(getAdapterPosition()).getId())
                             .child("is_done")
                             .setValue(mTasks.get(getAdapterPosition()).getIs_done());
-
-                    // Notify the RecyclerView about the update.
-                    notifyDataSetChanged();
                 }
             });
         }
 
+        public void bind(Task current) {
+            this.dataBinding.setVariable(BR.task, current);
+            this.dataBinding.executePendingBindings();
+        }
     }
 
     public interface ClickListener {

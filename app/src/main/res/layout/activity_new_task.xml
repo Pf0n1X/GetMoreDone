@@ -92,7 +92,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:background="?attr/colorControlHighlight">
 
         <Button
             android:id="@+id/cancel_na_button"

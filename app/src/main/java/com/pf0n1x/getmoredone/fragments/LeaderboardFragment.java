@@ -1,27 +1,24 @@
 package com.pf0n1x.getmoredone.fragments;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.pf0n1x.getmoredone.R;
 import com.pf0n1x.getmoredone.adapters.LeaderboardListAdapter;
 import com.pf0n1x.getmoredone.entities.Account;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class LeaderboardFragment extends Fragment {
@@ -55,6 +52,7 @@ public class LeaderboardFragment extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Account newAccount = dataSnapshot.getValue(Account.class);
                 mLeaderboard.add(newAccount);
+                Collections.sort(mLeaderboard);
                 mAdapter.setLeaderboard(mLeaderboard);
             }
 

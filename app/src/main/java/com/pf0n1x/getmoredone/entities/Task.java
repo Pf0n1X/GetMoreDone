@@ -1,11 +1,10 @@
 package com.pf0n1x.getmoredone.entities;
 
 import androidx.annotation.NonNull;
-
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
-public class Task {
+public class Task implements Comparable<Task> {
 
     // Data Members;
     private String id;
@@ -145,4 +144,16 @@ public class Task {
         this.end_time = end_time;
     }
     public void setIs_done(boolean is_done) { this.is_done = is_done; }
+
+    @Override
+    public int compareTo(Task o) {
+        if ((o.getIs_done() && this.getIs_done()) ||
+                (!o.getIs_done() && !this.getIs_done())) {
+            return 0;
+        } else if (this.getIs_done() && !o.getIs_done()) {
+            return -1;
+        } else {
+            return 1;
+        }
+    }
 }

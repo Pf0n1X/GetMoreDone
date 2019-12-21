@@ -4,19 +4,19 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/textview_person_icon"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/imageview_person_icon"
+        android:layout_width="253dp"
         android:layout_height="253dp"
         android:layout_centerHorizontal="true"
-        android:drawableTop="@drawable/ic_person_profile"
+        android:src="@drawable/icons8_customer_500"
         android:textSize="30sp" />
 
     <TextView
         android:id="@+id/textview_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textview_person_icon"
+        android:layout_below="@+id/imageview_person_icon"
         android:layout_centerHorizontal="true" />
 
     <androidx.recyclerview.widget.RecyclerView

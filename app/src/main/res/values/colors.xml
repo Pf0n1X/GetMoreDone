@@ -2,10 +2,10 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#2D60FF</color>
     <color name="colorTextMainOnPrimary">#000000</color>
     <color name="colorTextSubOnPrimary">#8f8f8f</color>
     <color name="colorMainBG">#f9f9f9</color>
     <color name="colorInactiveMenuItem">#666666</color>
-    <color name="colorActiveMenuItem">#FF4081</color>
+    <color name="colorActiveMenuItem">#2D60FF</color>
 </resources>

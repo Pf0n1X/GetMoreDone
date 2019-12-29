@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.pf0n1x.getmoredone.BR;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -21,7 +20,7 @@ public class LeaderboardListAdapter extends RecyclerView.Adapter<LeaderboardList
     // Data Members
     private final LayoutInflater mInflater;
     private List<Account> mLeaderboard; // A cached copy of the leaderboard
-    private static TaskListAdapter.ClickListener clickListener;
+    private static LeaderboardListAdapter.ClickListener clickListener;
 
     // Constant Members
     private final FirebaseDatabase mDb = FirebaseDatabase.getInstance();
@@ -81,5 +80,9 @@ public class LeaderboardListAdapter extends RecyclerView.Adapter<LeaderboardList
             this.dataBinding.executePendingBindings();
             itemPositionTextView.setText((position + 1) + "");
         }
+    }
+
+    public interface ClickListener {
+        void onItemClick(View v, int position);
     }
 }

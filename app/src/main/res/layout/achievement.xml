@@ -1,13 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout>
 
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:numStars="3"
-        android:rating="2"
-        android:layout_height="wrap_content" />
+    <data>
 
-</LinearLayout>
+        <variable
+            name="achievement"
+            type="com.pf0n1x.getmoredone.entities.Achievement" />
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_ach_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/imageview_ach_icon"
+                android:layout_width="115dp"
+                android:layout_height="115dp"
+                android:src="@drawable/icons8_money_box_500" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"LVL " + achievement.stars}' />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/linearlayout_ach_icon">
+
+            <TextView
+                android:id="@+id/textview_ach_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Streak" />
+
+            <com.skydoves.progressview.ProgressView
+                android:id="@+id/progressview_achievement"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginRight="40dp"
+                app:progressView_autoAnimate="true"
+                app:progressView_colorBackground="@color/colorMainBG"
+                app:progressView_colorProgress="@color/colorAccent"
+                app:progressView_labelColorInner="@color/white"
+                app:progressView_labelColorOuter="@color/black"
+                app:progressView_labelSize="13sp"
+                app:progressView_labelSpace="10dp"
+                app:progressView_labelTypeface="bold"
+                app:progressView_max="100"
+                app:progressView_padding="1dp"
+                app:progressView_progress="0"
+                app:progressView_radius="12dp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

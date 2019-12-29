@@ -21,12 +21,30 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <ImageView
+                android:id="@+id/imageview_streak"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/icons8_lightning_bolt_100" />
 
             <TextView
                 android:id="@+id/textview_streak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:background="?attr/colorPrimary"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:id="@+id/imageview_money"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="35dp"
+                android:src="@drawable/icons8_money_box_100" />
+
+            <TextView
+                android:id="@+id/textview_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"

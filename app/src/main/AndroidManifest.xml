@@ -9,15 +9,43 @@
         android:roundIcon="@drawable/icons8_checked_100"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewTaskActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-                  android:label="New Task"
-                  android:parentActivityName=".MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                       android:value=".MainActivity" />
-            <!--Use a text element-->
+        <activity
+            android:name=".SettingsAboutActivity"
+            android:label="About"
+            android:parentActivityName=".SettingsActivity">
+
+            <intent-filter>
+
+                <action android:name="com.pf0n1x.getmoredone.SettingsAboutActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pf0n1x.getmoredone.SettingsActivity" />
+
         </activity>
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pf0n1x.getmoredone.MainActivity" />
+        </activity>
+        <activity
+            android:name=".NewTaskActivity"
+            android:label="New Task"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+            <!-- Use a text element -->
+        </activity>
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

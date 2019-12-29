@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.labters.lottiealertdialoglibrary.DialogTypes;
+import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
 import com.pf0n1x.getmoredone.BR;
 import com.pf0n1x.getmoredone.R;
 import com.pf0n1x.getmoredone.entities.Task;
 import java.util.List;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 // TODO: Add task deletion.
 // TODO: Add documentation.
@@ -97,7 +97,11 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
                     // Set the strikethrough according to the checkbox.
                     if (isChecked) {
-                        new SweetAlertDialog(mContext).show();
+                        new LottieAlertDialog.Builder(mContext, DialogTypes.TYPE_SUCCESS)
+                                .setTitle("Good job!") // TODO: Extract text resource
+                                .setDescription("You're the best!") // TODO: Extract text resource
+                                .build()
+                                .show();
                         // TODO: retrieve user data and experience and update the user's exp in the db
                     }
 

@@ -10,10 +10,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
-
 import androidx.appcompat.widget.Toolbar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,14 +44,14 @@ public class TasksFragment extends Fragment {
     // Data Members
     private ProgressView mProgressView;
     private FloatingActionButton mFABNewTask;
-    private Context mContext; // TODO: Check if it needs to be removed.
     private Date mCurShownDate;
     private DatePickerDialog mCurDatePickerDialog;
     private DatabaseReference mDatesRef;
     private List<Task> mTaskList;
     private TaskListAdapter mAdapter;
     private ChildEventListener mTaskEventListener;
-    private TextView mStreakButton;
+    private TextView mStreakTextView;
+    private TextView mMoneyTextView;
 
     // Constant Members
     private final Calendar mCalendar = Calendar.getInstance();
@@ -70,8 +68,8 @@ public class TasksFragment extends Fragment {
         // Save the progress view.
         mProgressView = view.findViewById(R.id.progressViewTasks); // TODO: Define a setter
         mFABNewTask = view.findViewById(R.id.fab_new_task); // TODO: Define a setter
-        mStreakButton = view.findViewById(R.id.textview_streak);
-        mContext = this.getContext(); // TODO: Check if it needs to be removed
+        mStreakTextView = view.findViewById(R.id.textview_streak);
+        mMoneyTextView = view.findViewById(R.id.textview_money);
         mTaskList = new LinkedList<Task>();
         mAdapter = new TaskListAdapter(this.getContext());
 
@@ -147,7 +145,7 @@ public class TasksFragment extends Fragment {
         mFABNewTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, NewTaskActivity.class);
+                Intent intent = new Intent(TasksFragment.this.getContext(), NewTaskActivity.class);
                 startActivity(intent);
             }
         });
@@ -232,7 +230,8 @@ public class TasksFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Account curAccount = dataSnapshot.getValue(Account.class);
-                mStreakButton.setText(curAccount.getStreak() + "");
+                mStreakTextView.setText(curAccount.getStreak() + "");
+                mStreakTextView.setText(curAccount.getMoney() + "");
 
             }
 

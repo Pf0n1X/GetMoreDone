@@ -27,21 +27,20 @@ export const firstSignUp = functions.auth.user().onCreate((user)=> {
 	};
 
     var userCollections = {
-        Achievements: [
+        achievements: [
 			{
-				id: 1,
+				id: '1',
 				stars: 0,
-				exp: 0
+				exp: 0,
+                currentStarProgress: 0,
+                currentStarMaxProgress: 10
 			},
 			{
-				id: 2,
+				id: '2',
 				stars: 0,
-				exp: 0
-			},
-			{
-				id: 3,
-				stars: 0,
-				exp: 0
+				exp: 0,
+                currentStarProgress: 0,
+                currentStarMaxProgress: 10
 			}
 		]
     };

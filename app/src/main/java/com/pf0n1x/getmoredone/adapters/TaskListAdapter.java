@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
@@ -25,7 +27,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     // Data Members
     private final LayoutInflater mInflater;
     private List<Task> mTasks; // A cached copy of the tasks
-    private static ClickListener clickListener;
+    //    private static ClickListener clickListener;
     private Context mContext;
 
     // Constant Members
@@ -84,7 +86,10 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
                 @Override
                 public void onClick(View v) {
-                    clickListener.onItemClick(v, getAdapterPosition());
+                    TextView titleTextView = v.getRootView().findViewById(R.id.single_task_title);
+                    TextView descTextView = v.getRootView().findViewById(R.id.single_task_desc);
+                    titleTextView.setText(mTasks.get(getAdapterPosition()).getTitle());
+                    descTextView.setText(mTasks.get(getAdapterPosition()).getDescription());
                 }
             });
 
@@ -130,7 +135,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         }
     }
 
-    public interface ClickListener {
-        void onItemClick(View v, int position);
-    }
+//    public interface ClickListener {
+//        void onItemClick(View v, int position);
+//    }
 }

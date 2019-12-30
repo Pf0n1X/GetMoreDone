@@ -30,11 +30,11 @@
                 android:id="@+id/textview_streak"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="18dp"
-                android:textStyle="bold"
                 android:background="?attr/colorPrimary"
-                android:textColor="@color/black" />
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/imageview_money"
@@ -47,11 +47,11 @@
                 android:id="@+id/textview_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="18dp"
-                android:textStyle="bold"
                 android:background="?attr/colorPrimary"
-                android:textColor="@color/black" />
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
             <com.skydoves.progressview.ProgressView
                 android:id="@+id/progressViewTasks"
@@ -73,18 +73,57 @@
                 app:progressView_max="100"
                 app:progressView_padding="1dp"
                 app:progressView_progress="0"
-                app:progressView_radius="12dp"/>
+                app:progressView_radius="12dp" />
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/single_task"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/tasksAppBar"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="10dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/single_task_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text='Get More Done!'
+                    android:textColor="@color/colorAccent"
+                    android:textSize="32sp" />
+
+                <TextView
+                    android:id="@+id/single_task_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="&#8226; Click on a task to get more information about it.\n&#8226; Once tasks are completed you cannot edit or undo them."
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.cardview.widget.CardView>
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_tasks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tasksAppBar"
+        android:layout_below="@id/single_task"
         android:layout_margin="16dp"
         tools:listitem="@layout/task" />
 
@@ -96,9 +135,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|end"
-        android:backgroundTint="@color/colorMainBG"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/colorMainBG"
         app:maxImageSize="69dp"
         app:srcCompat="@drawable/icons8_add_100" />
 

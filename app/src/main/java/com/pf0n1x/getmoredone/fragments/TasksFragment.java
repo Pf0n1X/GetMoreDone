@@ -1,7 +1,6 @@
 package com.pf0n1x.getmoredone.fragments;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.pf0n1x.getmoredone.NewTaskActivity;
 import com.pf0n1x.getmoredone.R;
 import com.pf0n1x.getmoredone.adapters.TaskListAdapter;
@@ -52,10 +52,14 @@ public class TasksFragment extends Fragment {
     private ChildEventListener mTaskEventListener;
     private TextView mStreakTextView;
     private TextView mMoneyTextView;
+    private Account mCurUser;
 
     // Constant Members
     private final Calendar mCalendar = Calendar.getInstance();
     private final FirebaseDatabase mDb = FirebaseDatabase.getInstance();
+    private final DatabaseReference mUserDBRef = mDb
+            .getReference("users").child(FirebaseAuth.getInstance()
+                    .getCurrentUser().getUid());
 
     // TODO: Split this methhod to many sub methods
     @Nullable
@@ -92,12 +96,13 @@ public class TasksFragment extends Fragment {
                 }
 
                 // Get the current progress
-                float progress = calculateProgress(mTaskList);
+                int progress = mAdapter.getCompletedTasksCount();
 
                 // Set the percentage according to the
                 // user's progress
+                mProgressView.setMax(mTaskList.size());
                 mProgressView.setProgress(progress);
-                mProgressView.setLabelText((int) progress + "% achieved.");
+                mProgressView.setLabelText(progress + "/" + mTaskList.size());
                 Collections.sort(mTaskList);
                 mAdapter.setTasks(mTaskList);
             }
@@ -106,14 +111,15 @@ public class TasksFragment extends Fragment {
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
                 // Get the current progress
-                float progress = calculateProgress(mTaskList);
+                int progress = mAdapter.getCompletedTasksCount();
 
                 // Set the percentage according to the
                 // user's progress
+                mProgressView.setMax(mTaskList.size());
                 mProgressView.setProgress(progress);
-                mProgressView.setLabelText((int) progress + "% achieved.");
                 Collections.sort(mTaskList);
                 mAdapter.setTasks(mTaskList);
+                mProgressView.setLabelText(progress + "/" + mTaskList.size());
             }
 
             @Override
@@ -184,6 +190,7 @@ public class TasksFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
         // Get the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.tasks_frag_toolbar, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -207,47 +214,15 @@ public class TasksFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private float calculateProgress(List<Task> tasks) {
-        float sumComplete = 0;
-
-        if (tasks.size() != 0) {
-
-            // Loop through all the tasks and calculate their sum
-            for (int cur = 0; cur < tasks.size(); cur++) {
-                if (tasks.get(cur).getIs_done()) {
-                    sumComplete++;
-                }
-            }
-
-            return (sumComplete / tasks.size()) * 100;
-        } else {
-            return 0;
-        }
-    }
-
     private void setUserUpdateBehaviour() {
-        ChildEventListener accountEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Account curAccount = dataSnapshot.getValue(Account.class);
-                mStreakTextView.setText(curAccount.getStreak() + "");
-                mStreakTextView.setText(curAccount.getMoney() + "");
-
-            }
+        ValueEventListener accountEventListener = new ValueEventListener() {
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mCurUser = dataSnapshot.getValue(Account.class);
+                mStreakTextView.setText(mCurUser.getStreak() + "");
+                mMoneyTextView.setText(mCurUser.getMoney() + "");
+                mAdapter.setCurUser(mCurUser);
             }
 
             @Override
@@ -255,9 +230,7 @@ public class TasksFragment extends Fragment {
 
             }
         };
-        mDb.getReference("users")
-                .orderByChild("uid")
-                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addChildEventListener(accountEventListener);
+
+        mUserDBRef.addValueEventListener(accountEventListener);
     }
 }

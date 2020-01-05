@@ -17,6 +17,7 @@ import com.labters.lottiealertdialoglibrary.DialogTypes;
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
 import com.pf0n1x.getmoredone.BR;
 import com.pf0n1x.getmoredone.R;
+import com.pf0n1x.getmoredone.entities.Account;
 import com.pf0n1x.getmoredone.entities.Task;
 import java.util.List;
 
@@ -27,11 +28,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     // Data Members
     private final LayoutInflater mInflater;
     private List<Task> mTasks; // A cached copy of the tasks
-    //    private static ClickListener clickListener;
     private Context mContext;
+    private Account mCurUser;
 
     // Constant Members
     private final FirebaseDatabase mDb = FirebaseDatabase.getInstance();
+    private final DatabaseReference mUserDBRef = mDb
+            .getReference("users").child(FirebaseAuth.getInstance()
+                    .getCurrentUser().getUid());
 
     // Constructors
     public TaskListAdapter(Context context) {
@@ -72,6 +76,10 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         notifyDataSetChanged();
     }
 
+    public void setCurUser(Account user) {
+        this.mCurUser = user;
+    }
+
     class TaskViewHolder extends RecyclerView.ViewHolder {
 
         // Data Members
@@ -99,15 +107,29 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
                     // Get the checkbox current state
                     boolean isChecked = taskItemCheckBox.isChecked();
+                    Task curTask = mTasks.get(getAdapterPosition());
+                    curTask.setIs_done(isChecked);
+                    int progress = getCompletedTasksCount();
 
-                    // Set the strikethrough according to the checkbox.
-                    if (isChecked) {
+                    if (mTasks.size() == progress && curTask.getIs_done()) {
+
+                        new LottieAlertDialog.Builder(mContext, DialogTypes.TYPE_SUCCESS)
+                                .setTitle("Daily goal achieved!") // TODO: Extract text resource
+                                .setDescription("You have achieved your daily goal," +
+                                        "\nwhich is why you will be rewarded with 50 coins.") // TODO: Extract text resource
+                                .build()
+                                .show();
+
+
+                        // Update the user's money.
+                        mCurUser.setMoney(mCurUser.getMoney() + 50);
+                        mUserDBRef.setValue(mCurUser);
+                    } else if (curTask.getIs_done()) {
                         new LottieAlertDialog.Builder(mContext, DialogTypes.TYPE_SUCCESS)
                                 .setTitle("Good job!") // TODO: Extract text resource
                                 .setDescription("You're the best!") // TODO: Extract text resource
                                 .build()
                                 .show();
-                        // TODO: retrieve user data and experience and update the user's exp in the db
                     }
 
                     // Update the entity accordingly.
@@ -133,6 +155,22 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             this.dataBinding.setVariable(BR.task, current);
             this.dataBinding.executePendingBindings();
         }
+    }
+
+    public int getCompletedTasksCount() {
+        int count = 0;
+
+        if (mTasks != null) {
+
+            // Loop through all the tasks and calculate their sum
+            for (int cur = 0; cur < mTasks.size(); cur++) {
+                if (mTasks.get(cur).getIs_done()) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
     }
 
 //    public interface ClickListener {

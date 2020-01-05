@@ -14,6 +14,7 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.functions.FirebaseFunctions;
 import com.pf0n1x.getmoredone.fragments.LeaderboardFragment;
 import com.pf0n1x.getmoredone.fragments.ProfileFragment;
 import com.pf0n1x.getmoredone.fragments.StoreFragment;
@@ -22,10 +23,8 @@ import com.pf0n1x.getmoredone.fragments.TasksFragment;
 import java.util.Arrays;
 import java.util.List;
 
-// TODO: Handle CheckBox Tick(DB update, sound, dialog, progress bar update).
-// TODO: Add the leaderboard section and fragment.
-// TODO: Add the store.
-// TODO: Learn & add sounds on mission complete and progress bar fill
+// TODO: Handle CheckBox Tick(DB update, sound, dialog).
+// TODO: Learn & add sounds on mission complete
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
 
     // Data Members
+    private FirebaseFunctions firebaseFunctions = FirebaseFunctions.getInstance();
     private BottomNavigationView.OnNavigationItemSelectedListener mNavListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -98,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
+
+                // TODO: Call the user sign-in cloud-function.
+                firebaseFunctions.getHttpsCallable("onLogIn")
+                        .call();
 
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

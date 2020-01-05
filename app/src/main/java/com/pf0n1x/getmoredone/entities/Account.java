@@ -11,6 +11,7 @@ public class Account implements Comparable<Account> {
     private int weeklyGroup;
     private int streak;
     private int money;
+    private long lastActiveDate;
 
     // Constructors
 
@@ -21,7 +22,7 @@ public class Account implements Comparable<Account> {
 
     }
 
-    public Account(String uid, String name, int weeklyExperience, String email, int league, int weeklyGroup, int streak, int money) {
+    public Account(String uid, String name, int weeklyExperience, String email, int league, int weeklyGroup, int streak, int money, long lastActiveDate) {
         this.uid = uid;
         this.name = name;
         this.weeklyExperience = weeklyExperience;
@@ -30,6 +31,7 @@ public class Account implements Comparable<Account> {
         this.weeklyGroup = weeklyGroup;
         this.streak = streak;
         this.money = money;
+        this.lastActiveDate = lastActiveDate;
     }
 
     // Getters
@@ -67,6 +69,10 @@ public class Account implements Comparable<Account> {
         return this.money;
     }
 
+    public long getLastActiveDate() {
+        return this.lastActiveDate;
+    }
+
     // Setters
     public void setUid(String uid) {
         this.uid = uid;
@@ -99,6 +105,10 @@ public class Account implements Comparable<Account> {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    public void setLastActiveDate(long lastActiveDate) {
+        this.lastActiveDate = lastActiveDate;
     }
 
     @Override

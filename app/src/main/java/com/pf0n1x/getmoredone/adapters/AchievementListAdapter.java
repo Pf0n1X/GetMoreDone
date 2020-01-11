@@ -92,7 +92,7 @@ public class AchievementListAdapter
             switch (current.getId()) {
 
                 // Streak achievement
-                case "1": // TODO: change to a constant
+                case "0": // TODO: change to a constant
                     itemAchImg.setImageResource(R.drawable.icons8_lightning_bolt_500);
                     itemTextView.setText(dataBinding.getRoot()
                             .getResources()
@@ -100,7 +100,7 @@ public class AchievementListAdapter
                     break;
 
                 // Money achievement
-                case "2": // TODO: change to a constant
+                case "1": // TODO: change to a constant
                     itemAchImg.setImageResource(R.drawable.icons8_money_box_500);
                     itemTextView.setText(dataBinding.getRoot()
                             .getResources()

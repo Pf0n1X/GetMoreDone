@@ -1,11 +1,11 @@
 package com.pf0n1x.getmoredone.adapters;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
@@ -120,6 +120,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                                 .build()
                                 .show();
 
+                        // Play the success sound.
+                        playSuccessSound();
 
                         // Update the user's money.
                         mCurUser.setMoney(mCurUser.getMoney() + 50);
@@ -173,7 +175,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         return count;
     }
 
-//    public interface ClickListener {
-//        void onItemClick(View v, int position);
-//    }
+    private void playSuccessSound() {
+        MediaPlayer mp = MediaPlayer.create(mContext, R.raw.tada);
+        mp.start();
+    }
 }

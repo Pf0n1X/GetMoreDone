@@ -30,21 +30,22 @@ export const firstSignUp = functions.auth.user().onCreate((user)=> {
 		lastActiveDate: lastActiveDate
 	};
 
+//  TODO: Get these valeus from the db thresholds.
     var userCollections = {
         achievements: [
 			{
-				id: '1',
+				id: '0',
 				stars: 0,
 				exp: 0,
                 currentStarProgress: 0,
                 currentStarMaxProgress: 10
 			},
 			{
-				id: '2',
+				id: '1',
 				stars: 0,
 				exp: 0,
                 currentStarProgress: 0,
-                currentStarMaxProgress: 10
+                currentStarMaxProgress: 150
 			}
 		]
     };
@@ -94,6 +95,75 @@ export const onLogIn = functions.https.onCall((data, context) => {
                 });
 });
 
+export const onAccountUpdate = functions.database
+    .ref('users/{userId}')
+    .onUpdate((change, context) => {
+    const oldMoney = change.before.child('money').val();
+    const newMoney = change.after.child('money').val();
+
+    // TODO: Delete logs
+    console.log('The old money is: ' + oldMoney);
+    console.log('The new money is: ' + newMoney);
+
+    // If the amount of money was just increased.
+    // Get the current achievement data
+    if (newMoney > oldMoney) {
+        let achRef = admin.database().ref('user_collections/' + context.params.userId + '/achievements/1');
+        achRef.once('value', (achSnapshot) => {
+            var currentStarProgress = achSnapshot.val().currentStarProgress;
+            var currentStarMaxProgress = achSnapshot.val().currentStarMaxProgress;
+
+            console.log('The current star progress is: ' + currentStarProgress);
+            console.log('The current star max progress is: ' + currentStarMaxProgress);
+
+            // If the new amount of money is bigger than the current achievement progress
+            // Update it
+            if (newMoney > currentStarProgress) {
+                currentStarProgress = newMoney;
+
+                // Update the achievement's progress.
+                achRef.update({
+                    "currentStarProgress": currentStarProgress
+                }, function(error) {
+                    if (error) {
+                        console.log("ERROR: User id: " + context.params.userId);
+                    } else {
+                        console.log("SUCCESS: User id: " + context.params.userId);
+                    }
+                });
+            }
+
+            // If the current progress is bigger or equal than the max progress
+            // Get the next threshold's data
+            if (currentStarProgress >= currentStarMaxProgress) {
+                let nextThresholdRef = admin.database().ref('achievementThresholds/1')
+                    .orderByChild('star')
+                        .equalTo(achSnapshot.val().stars + 1);
+                nextThresholdRef.on('child_added', (nextThresholdSnapshot) => {
+                    var nextThresholdMaxProgress = nextThresholdSnapshot!.val().maxProgress;
+                    var nextThresholdStar = nextThresholdSnapshot!.val().star;
+
+                    console.log('The next threshold max progress is: ' + nextThresholdMaxProgress);
+                    console.log('The next threshold star is: ' + nextThresholdStar);
+
+                    // Update the current achievement's star and max progress according
+                    // to the next threshold.
+                    achRef.update({
+                        "currentStarMaxProgress": nextThresholdMaxProgress,
+                        "stars": nextThresholdStar
+                        }, function(error) {
+                            if (error) {
+                                console.log("ERROR: User id: " + context.params.userId);
+                            } else {
+                                console.log("SUCCESS: User id: " + context.params.userId);
+                            }
+                        });
+                });
+            }
+        });
+    }
+});
+
 export const onTaskFinish = functions.database
     .ref('user_collections/{userId}/tasks/{taskId}')
     .onUpdate((change, context) => {
@@ -129,6 +199,72 @@ export const onTaskFinish = functions.database
 
                 if (differenceInDays == 1) {
                     streak = streak + 1;
+
+                    let achRef = admin.database().ref('user_collections/' + context.params.userId + '/achievements/0');
+                    achRef.once('value', (achSnapshot) => {
+
+                        // Get the current progress and stars
+                        var curProgress = achSnapshot.val().currentStarProgress;
+                        var curStars = achSnapshot.val().stars
+
+                        console.log("The current progress is: " + curProgress);
+                        console.log("The current amount of stars is: " + curStars);
+
+                        // If the current streak is bigger than the one in the achievement
+                        // set the current streak as the one in the achievement.
+                        if (streak > curProgress) {
+                            curProgress = streak;
+
+                            // Get the current level achievement threshold data.
+                            let thresholdRef = admin.database().ref('achievementThresholds/0')
+                                .orderByChild('star')
+                                .equalTo(curStars);
+                            thresholdRef.on('child_added', (thresholdSnapshot) => {
+                                var curThresholdMaxProgress = thresholdSnapshot!.val().maxProgress;
+                                console.log("The current threshold max progress is: " + curThresholdMaxProgress);
+
+                                // If the current progress is bigger than the current
+                                // star's threshold, get the next star's threshold.
+                                if (curProgress >= curThresholdMaxProgress) {
+                                    let nextThresholdRef = admin.database().ref('achievementThresholds/0')
+                                        .orderByChild('star')
+                                        .equalTo(achSnapshot.val().stars + 1);
+                                    nextThresholdRef.on('child_added', (nextThresholdSnapshot) => {
+                                        var nextMaxProgress = nextThresholdSnapshot!.val().maxProgress;
+                                        var nextStar = nextThresholdSnapshot!.val().star;
+
+                                        // TODO" Delete logs
+                                        console.log("The next threshold max progress is: " + nextMaxProgress);
+                                        console.log("The next threshold max progress is: " + nextMaxProgress);
+
+                                        // Update the current achievement's star and max progress according
+                                        // to the next threshold.
+                                        achRef.update({
+                                             "currentStarMaxProgress": nextMaxProgress,
+                                             "stars": nextStar
+                                             }, function(error) {
+                                                if (error) {
+                                                    console.log("ERROR: User id: " + context.params.userId);
+                                                } else {
+                                                    console.log("SUCCESS: User id: " + context.params.userId);
+                                                }
+                                        });
+                                    });
+                                }
+                            });
+
+                            // Update the current progress.
+                            achRef.update({
+                                "currentStarProgress": curProgress
+                                }, function(error) {
+                                    if (error) {
+                                        console.log("ERROR: User id: " + context.params.userId);
+                                    } else {
+                                        console.log("SUCCESS: User id: " + context.params.userId);
+                                    }
+                            });
+                        }
+                     });
                 }
 
                 ref.update({

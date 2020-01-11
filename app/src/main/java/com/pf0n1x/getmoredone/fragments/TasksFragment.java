@@ -2,6 +2,7 @@ package com.pf0n1x.getmoredone.fragments;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.annotation.NonNull;
@@ -52,6 +54,7 @@ public class TasksFragment extends Fragment {
     private ChildEventListener mTaskEventListener;
     private TextView mStreakTextView;
     private TextView mMoneyTextView;
+    private ImageView mStreakImageView;
     private Account mCurUser;
 
     // Constant Members
@@ -74,6 +77,7 @@ public class TasksFragment extends Fragment {
         mFABNewTask = view.findViewById(R.id.fab_new_task); // TODO: Define a setter
         mStreakTextView = view.findViewById(R.id.textview_streak);
         mMoneyTextView = view.findViewById(R.id.textview_money);
+        mStreakImageView = view.findViewById(R.id.imageview_streak);
         mTaskList = new LinkedList<Task>();
         mAdapter = new TaskListAdapter(this.getContext());
 
@@ -223,6 +227,7 @@ public class TasksFragment extends Fragment {
                 mStreakTextView.setText(mCurUser.getStreak() + "");
                 mMoneyTextView.setText(mCurUser.getMoney() + "");
                 mAdapter.setCurUser(mCurUser);
+                handleStreakColoring(mCurUser);
             }
 
             @Override
@@ -230,7 +235,22 @@ public class TasksFragment extends Fragment {
 
             }
         };
-
+        mUserDBRef.keepSynced(true);
         mUserDBRef.addValueEventListener(accountEventListener);
+    }
+
+    private void handleStreakColoring(Account account) {
+        Date today = new Date();
+        float daysDiff = (new Date().getTime() - account.getLastActiveDate()) / (1000 * 3600 * 24);
+
+        // If the last active date is today, make the TextView and Image appear colored.
+        // Otherwise, grey them out.
+        if (daysDiff == 0) {
+            mStreakTextView.setTextColor(Color.BLACK);
+            mStreakImageView.setImageResource(R.drawable.icons8_lightning_bolt_100);
+        } else {
+            mStreakTextView.setTextColor(Color.GRAY);
+            mStreakImageView.setImageResource(R.drawable.icons8_lightning_bolt_100_disabled);
+        }
     }
 }

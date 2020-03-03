@@ -240,7 +240,7 @@ public class TasksFragment extends Fragment {
     }
 
     private void handleStreakColoring(Account account) {
-        Date today = new Date();
+        Date today = new Date(); // TODO: delete this var if it isn't needed.
         float daysDiff = (new Date().getTime() - account.getLastActiveDate()) / (1000 * 3600 * 24);
 
         // If the last active date is today, make the TextView and Image appear colored.

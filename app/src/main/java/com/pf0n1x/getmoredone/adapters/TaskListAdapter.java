@@ -26,7 +26,6 @@ import java.util.List;
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskViewHolder> {
 
     // Data Members
-    private final LayoutInflater mInflater;
     private List<Task> mTasks; // A cached copy of the tasks
     private Context mContext;
     private Account mCurUser;
@@ -36,6 +35,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     private final DatabaseReference mUserDBRef = mDb
             .getReference("users").child(FirebaseAuth.getInstance()
                     .getCurrentUser().getUid());
+    private final LayoutInflater mInflater;
 
     // Constructors
     public TaskListAdapter(Context context) {

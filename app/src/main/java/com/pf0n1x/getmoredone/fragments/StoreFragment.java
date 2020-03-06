@@ -105,6 +105,7 @@ public class StoreFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mCurUser = dataSnapshot.getValue(Account.class);
+                mAdapter.setCurUser(mCurUser);
                 mMoneyTextView.setText(mCurUser.getMoney() + "");
             }
 

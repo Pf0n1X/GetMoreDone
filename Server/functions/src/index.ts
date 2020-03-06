@@ -27,7 +27,10 @@ export const firstSignUp = functions.auth.user().onCreate((user)=> {
 		weeklyGroup: 0,
 		streak: 0,
 		money: 0,
-		lastActiveDate: lastActiveDate
+		lastActiveDate: lastActiveDate,
+		hasStreakFreeze: false,
+		hasWager: false,
+		wagerStreak: 0
 	};
 
 //  TODO: Get these valeus from the db thresholds.
@@ -164,6 +167,62 @@ export const onAccountUpdate = functions.database
     }
 });
 
+export const onPurchaseStreakFreeze = functions.database
+    .ref('users/{userId}/hasStreakFreeze')
+    .onUpdate((change, context) => {
+        // Retrieve the user's data from the db.
+        let ref = admin.database().ref('users/' + context.params.userId);
+        ref.once('value', (snapshot) => {
+            var money = snapshot.val().money;
+            var oldHasStreakFreeze = change.before.val();
+            var newHasStreakFreeze = change.after.val();
+            console.log("money: " + money);
+
+            // If the user has enough money, make the purchase.
+            if (money >= 50 && !oldHasStreakFreeze && newHasStreakFreeze) { // TODO: Get the price from the database.
+                ref.update({
+                    "hasStreakFreeze": true,
+                    "money": money - 50 // TODO: Get the price from the database.
+                }, function (error) {
+                    if (error) {
+                        console.log("ERROR: couldn't update user: " + context.params.userId);
+                    } else {
+                        console.log("SUCCESS: User: " + context.params.userId + " purchased wager");
+                    }
+                });
+            }
+        });
+    });
+
+export const onPurchaseWager = functions.database
+    .ref('users/{userId}/hasWager')
+    .onUpdate((change, context) => {
+
+        // Retrieve the user's data from the db.
+        let ref = admin.database().ref('users/' + context.params.userId);
+        ref.once('value', (snapshot) => {
+            var money = snapshot.val().money;
+            var oldHasWager = change.before.val();
+            var newHasWager = change.after.val();
+            console.log("money: " + money);
+
+            // If the user has enough money, make the purchase.
+            if (money >= 50 && !oldHasWager && newHasWager) { // TODO: Get the price from the database.
+                ref.update({
+                    "hasWager": true,
+                    "money": money - 50, // TODO: Get the price from the database.
+                    "wagerStreak": 0
+                }, function (error) {
+                    if (error) {
+                        console.log("ERROR: couldn't update user: " + context.params.userId);
+                    } else {
+                        console.log("SUCCESS: User: " + context.params.userId + " purchased wager");
+                    }
+                });
+            }
+        });
+    });
+
 export const onTaskFinish = functions.database
     .ref('user_collections/{userId}/tasks/{taskId}')
     .onUpdate((change, context) => {
@@ -185,6 +244,9 @@ export const onTaskFinish = functions.database
 
                 // Check the days difference to update the streak accordingly.
                 var streak = snapshot.val().streak;
+                var wagerStreak = snapshot.val().wagerStreak;
+                var hasWager = snapshot.val().hasWager;
+                var hasStreakFreeze = snapshot.val().hasStreakFreeze;
                 var newLastActiveDate = new Date();
                 newLastActiveDate.setHours(0, 0, 0, 0);
                 var differenceInTime = newLastActiveDate.getTime() - oldLastActiveDate.getTime();
@@ -197,8 +259,17 @@ export const onTaskFinish = functions.database
                 console.log("ERROR: The new date is:" + newLastActiveDate.getTime());
                 console.log("ERROR: User id: " + "The difference in days is: " + differenceInDays);
 
-                if (differenceInDays == 1) {
+                if (differenceInDays == 1 || (hasStreakFreeze && differenceInDays == 2)) { // TODO: add "or 2 days and a streak freeze(and obviously set the hasStreakFreeze field to false"
                     streak = streak + 1;
+
+                    // TODO: Also update the wager streak.
+                    if (hasWager) {
+                        wagerStreak += 1;
+                    }
+
+                    if (hasStreakFreeze && differenceInDays == 2) {
+                        hasStreakFreeze = false;
+                    }
 
                     let achRef = admin.database().ref('user_collections/' + context.params.userId + '/achievements/0');
                     achRef.once('value', (achSnapshot) => {
@@ -265,12 +336,19 @@ export const onTaskFinish = functions.database
                             });
                         }
                      });
+                } else {
+                    hasStreakFreeze = false;
+                    hasWager = false;
+                    wagerStreak = 0;
                 }
 
                 ref.update({
                         "weeklyExperience": oldExp + 10,
                         "lastActiveDate": newLastActiveDate.getTime(),
-                        "streak": streak
+                        "streak": streak,
+                        "hasStreakFreeze": hasStreakFreeze,
+                        "hasWager": hasWager,
+                        "wagerStreak": wagerStreak
                     }, function(error) {
                         if (error) {
                             console.log("ERROR: User id: " + context.params.userId);

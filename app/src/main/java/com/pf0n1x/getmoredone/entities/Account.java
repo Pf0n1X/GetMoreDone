@@ -12,6 +12,9 @@ public class Account implements Comparable<Account> {
     private int streak;
     private int money;
     private long lastActiveDate;
+    private boolean hasStreakFreeze;
+    private boolean hasWager;
+    private int wagerStreak;
 
     // Constructors
 
@@ -22,7 +25,18 @@ public class Account implements Comparable<Account> {
 
     }
 
-    public Account(String uid, String name, int weeklyExperience, String email, int league, int weeklyGroup, int streak, int money, long lastActiveDate) {
+    public Account(String uid,
+                   String name,
+                   int weeklyExperience,
+                   String email,
+                   int league,
+                   int weeklyGroup,
+                   int streak,
+                   int money,
+                   long lastActiveDate,
+                   boolean hasStreakFreeze,
+                   boolean hasWager,
+                   int wagerStreak) {
         this.uid = uid;
         this.name = name;
         this.weeklyExperience = weeklyExperience;
@@ -32,6 +46,9 @@ public class Account implements Comparable<Account> {
         this.streak = streak;
         this.money = money;
         this.lastActiveDate = lastActiveDate;
+        this.hasStreakFreeze = hasStreakFreeze;
+        this.hasWager = hasWager;
+        this.wagerStreak = wagerStreak;
     }
 
     // Getters
@@ -73,6 +90,18 @@ public class Account implements Comparable<Account> {
         return this.lastActiveDate;
     }
 
+    public boolean getHasStreakFreeze() {
+        return this.hasStreakFreeze;
+    }
+
+    public boolean getHasWager() {
+        return this.hasWager;
+    }
+
+    public int getWagerStreak() {
+        return this.wagerStreak;
+    }
+
     // Setters
     public void setUid(String uid) {
         this.uid = uid;
@@ -109,6 +138,18 @@ public class Account implements Comparable<Account> {
 
     public void setLastActiveDate(long lastActiveDate) {
         this.lastActiveDate = lastActiveDate;
+    }
+
+    public void setHasStreakFreeze(boolean hasStreakFreeze) {
+        this.hasStreakFreeze = hasStreakFreeze;
+    }
+
+    public void setHasWager(boolean hasWager) {
+        this.hasWager = hasWager;
+    }
+
+    public void setWagerStreak(int wagerStreak) {
+        this.wagerStreak = wagerStreak;
     }
 
     @Override

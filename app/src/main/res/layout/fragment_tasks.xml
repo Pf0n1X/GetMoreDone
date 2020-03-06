@@ -68,7 +68,6 @@
                 app:progressView_labelColorOuter="@color/black"
                 app:progressView_labelSize="13sp"
                 app:progressView_labelSpace="10dp"
-                app:progressView_labelText="achieve 0%"
                 app:progressView_labelTypeface="bold"
                 app:progressView_max="100"
                 app:progressView_padding="1dp"

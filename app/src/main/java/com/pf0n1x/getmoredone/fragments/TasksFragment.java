@@ -104,7 +104,12 @@ public class TasksFragment extends Fragment {
 
                 // Set the percentage according to the
                 // user's progress
-                mProgressView.setMax(mTaskList.size());
+                if (mTaskList.size() == 0) {
+                    mProgressView.setMax(1);
+                } else {
+                    mProgressView.setMax(mTaskList.size());
+                }
+
                 mProgressView.setProgress(progress);
                 mProgressView.setLabelText(progress + "/" + mTaskList.size());
                 Collections.sort(mTaskList);
@@ -119,7 +124,12 @@ public class TasksFragment extends Fragment {
 
                 // Set the percentage according to the
                 // user's progress
-                mProgressView.setMax(mTaskList.size());
+                if (mTaskList.size() == 0) {
+                    mProgressView.setMax(1);
+                } else {
+                    mProgressView.setMax(mTaskList.size());
+                }
+
                 mProgressView.setProgress(progress);
                 Collections.sort(mTaskList);
                 mAdapter.setTasks(mTaskList);

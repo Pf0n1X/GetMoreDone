@@ -247,6 +247,7 @@ export const onTaskFinish = functions.database
                 var wagerStreak = snapshot.val().wagerStreak;
                 var hasWager = snapshot.val().hasWager;
                 var hasStreakFreeze = snapshot.val().hasStreakFreeze;
+                var money = snapshot.val().money;
                 var newLastActiveDate = new Date();
                 newLastActiveDate.setHours(0, 0, 0, 0);
                 var differenceInTime = newLastActiveDate.getTime() - oldLastActiveDate.getTime();
@@ -265,6 +266,12 @@ export const onTaskFinish = functions.database
                     // TODO: Also update the wager streak.
                     if (hasWager) {
                         wagerStreak += 1;
+
+                        if (wagerStreak == 7) {
+                            wagerStreak = 0;
+                            hasWager = false;
+                            money = money + 100; // TODO: Make a constant
+                        }
                     }
 
                     if (hasStreakFreeze && differenceInDays == 2) {
@@ -348,7 +355,8 @@ export const onTaskFinish = functions.database
                         "streak": streak,
                         "hasStreakFreeze": hasStreakFreeze,
                         "hasWager": hasWager,
-                        "wagerStreak": wagerStreak
+                        "wagerStreak": wagerStreak,
+                        "money": money
                     }, function(error) {
                         if (error) {
                             console.log("ERROR: User id: " + context.params.userId);

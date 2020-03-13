@@ -1,6 +1,7 @@
 package com.pf0n1x.getmoredone.entities;
 
 import androidx.annotation.NonNull;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
@@ -12,10 +13,7 @@ public class Task implements Comparable<Task> {
     private String title;
     private String description;
     private long creation_date;
-    private long start_date;
-    private long end_date;
-    private String start_time;
-    private String end_time;
+    private String date;
     private boolean is_done;
 
     // Constructors
@@ -31,19 +29,13 @@ public class Task implements Comparable<Task> {
                 @NonNull String uid,
                 String description,
                 long creation_date,
-                long start_date,
-                long end_date,
-                String start_time,
-                String end_time,
+                String date,
                 boolean is_done) {
         this.uid = uid;
         this.title = title;
         this.description = description;
         this.creation_date = creation_date;
-        this.start_date = start_date;
-        this.end_date = end_date;
-        this.start_time = start_time;
-        this.end_time = end_time;
+        this.date = date;
         this.is_done = is_done;
     }
 
@@ -52,20 +44,14 @@ public class Task implements Comparable<Task> {
                 @NonNull String uid,
                 String description,
                 long creation_date,
-                long start_date,
-                long end_date,
-                String start_time,
-                String end_time,
+                String date,
                 boolean is_done) {
         this.id = id;
         this.uid = uid;
         this.title = title;
         this.description = description;
         this.creation_date = creation_date;
-        this.start_date = start_date;
-        this.end_date = end_date;
-        this.start_time = start_time;
-        this.end_time = end_time;
+        this.date = date;
         this.is_done = is_done;
     }
 
@@ -90,22 +76,13 @@ public class Task implements Comparable<Task> {
         return this.creation_date;
     }
 
-    public long getStart_date() {
-        return this.start_date;
+    public String getDate() {
+        return this.date;
     }
 
-    public long getEnd_date() {
-        return this.end_date;
+    public boolean getIs_done() {
+        return this.is_done;
     }
-
-    public String getStart_time() {
-        return this.start_time;
-    }
-
-    public String getEnd_time() {
-        return this.end_time;
-    }
-    public boolean getIs_done() { return this.is_done; }
 
     // Setters
     public void setId(@NonNull String id) {
@@ -128,29 +105,20 @@ public class Task implements Comparable<Task> {
         this.creation_date = creation_date;
     }
 
-    public void setStart_date(long start_date) {
-        this.start_date = start_date;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public void setEnd_date(long end_date) {
-        this.end_date = end_date;
+    public void setIs_done(boolean is_done) {
+        this.is_done = is_done;
     }
-
-    public void setStart_time(String start_time) {
-        this.start_time = start_time;
-    }
-
-    public void setEnd_time(String end_time) {
-        this.end_time = end_time;
-    }
-    public void setIs_done(boolean is_done) { this.is_done = is_done; }
 
     @Override
     public int compareTo(Task o) {
         if ((o.getIs_done() && this.getIs_done()) ||
                 (!o.getIs_done() && !this.getIs_done())) {
             return 0;
-        } else if (this.getIs_done() && !o.getIs_done()) {
+        } else if (!this.getIs_done() && o.getIs_done()) {
             return -1;
         } else {
             return 1;

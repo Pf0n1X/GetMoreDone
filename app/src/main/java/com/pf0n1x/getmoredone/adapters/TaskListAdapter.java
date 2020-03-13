@@ -20,6 +20,7 @@ import com.pf0n1x.getmoredone.R;
 import com.pf0n1x.getmoredone.entities.Account;
 import com.pf0n1x.getmoredone.entities.Task;
 import java.util.List;
+import java.util.Date;
 
 // TODO: Add task deletion.
 // TODO: Add documentation.
@@ -149,6 +150,18 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                             .child(mTasks.get(getAdapterPosition()).getId())
                             .child("is_done")
                             .setValue(mTasks.get(getAdapterPosition()).getIs_done());
+
+                    // Check if the user has won the wager and notify him accordingly.
+                    // TODO: Transfer this to a function.
+                    Date today = new Date();
+                    long dayDiff = (today.getTime() - mCurUser.getLastActiveDate()) / (1000 * 3600 * 24);
+                    if (mCurUser.getHasWager() && dayDiff == 1 && mCurUser.getWagerStreak() == 6) {
+                        new LottieAlertDialog.Builder(mContext, DialogTypes.TYPE_SUCCESS)
+                                .setTitle("Wager Won!") // TODO: Extract text resource
+                                .setDescription("Enjoy your 100 coins. You earned them!") // TODO: Extract text resource
+                                .build()
+                                .show();
+                    }
                 }
             });
         }

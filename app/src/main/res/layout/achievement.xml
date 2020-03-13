@@ -61,7 +61,6 @@
                 app:progressView_labelSize="13sp"
                 app:progressView_labelSpace="10dp"
                 app:progressView_labelTypeface="bold"
-                app:progressView_max="100"
                 app:progressView_padding="1dp"
                 app:progressView_progress="0"
                 app:progressView_radius="12dp" />

@@ -1,124 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".NewTaskActivity">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".NewTaskBottomSheetDialog">
 
-    <!--TODO: Extract string resources-->
-    <EditText
-        android:id="@+id/edit_text_na_title"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="30dp"
-        android:background="@null"
-        android:hint="Title"
-        android:textSize="32sp" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edit_text_na_desc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_below="@+id/edit_text_na_title"
-        android:background="@null"
-        android:hint="Description" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/start_date_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/edit_text_na_desc">
-
-        <TextView
-            android:id="@+id/text_view_na_start_date"
-            android:layout_width="wrap_content"
+        <!--TODO: Extract string resources-->
+        <EditText
+            android:id="@+id/edit_text_na_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:text="Start"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="30dp"
+            android:background="@null"
+            android:hint="Title"
+            android:textSize="32sp" />
 
         <EditText
-            android:id="@+id/edit_text_na_start_date"
-            android:layout_width="72sp"
+            android:id="@+id/edit_text_na_desc"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:layout_alignBottom="@+id/start_date_layout"
-            android:focusable="false"
-            android:inputType="date"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/end_date_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/start_date_layout">
-
-        <TextView
-            android:id="@+id/text_view_na_end_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_below="@+id/edit_text_na_title"
             android:layout_marginLeft="15dp"
-            android:text="End"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="@null"
+            android:hint="Description" />
 
-        <EditText
-            android:id="@+id/edit_text_na_end_date"
-            android:layout_width="72sp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:layout_alignBottom="@+id/end_date_layout"
-            android:focusable="false"
-            android:inputType="date"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_below="@+id/edit_text_na_desc"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="0dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/save_na_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@color/transparent"
+                android:text="Save"
+                android:textColor="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="?attr/colorControlHighlight">
+            <Button
+                android:id="@+id/button_date"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="33dp"
+                android:layout_height="50dp"
+                android:background="@color/transparent"
+                android:drawableLeft="@drawable/ic_pick_date"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/cancel_na_button"
-            android:layout_width="193dp"
-            android:layout_height="35dp"
-            android:layout_marginEnd="13dp"
-            android:layout_marginRight="13dp"
-            android:text="Cancel"
-            android:onClick="onCancelTask"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/save_na_button"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
-            android:id="@+id/save_na_button"
-            android:layout_width="193dp"
-            android:layout_height="35dp"
-            android:text="Save"
-            android:onClick="onSaveTask"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</RelativeLayout>
+</androidx.core.widget.NestedScrollView>

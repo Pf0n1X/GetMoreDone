@@ -1,7 +1,6 @@
 package com.pf0n1x.getmoredone.fragments;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,9 +9,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -29,12 +31,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.pf0n1x.getmoredone.NewTaskActivity;
+import com.pf0n1x.getmoredone.NewTaskBottomSheetDialog;
 import com.pf0n1x.getmoredone.R;
 import com.pf0n1x.getmoredone.adapters.TaskListAdapter;
 import com.pf0n1x.getmoredone.entities.Account;
 import com.pf0n1x.getmoredone.entities.Task;
 import com.skydoves.progressview.ProgressView;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -46,7 +50,7 @@ public class TasksFragment extends Fragment {
     // Data Members
     private ProgressView mProgressView;
     private FloatingActionButton mFABNewTask;
-    private Date mCurShownDate;
+    private String mCurShownDate;
     private DatePickerDialog mCurDatePickerDialog;
     private DatabaseReference mDatesRef;
     private List<Task> mTaskList;
@@ -59,6 +63,7 @@ public class TasksFragment extends Fragment {
 
     // Constant Members
     private final Calendar mCalendar = Calendar.getInstance();
+    private final SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
     private final FirebaseDatabase mDb = FirebaseDatabase.getInstance();
     private final DatabaseReference mUserDBRef = mDb
             .getReference("users").child(FirebaseAuth.getInstance()
@@ -88,14 +93,16 @@ public class TasksFragment extends Fragment {
         recyclerTasksView.setLayoutManager(listLayoutManager);
         recyclerTasksView.addItemDecoration(new DividerItemDecoration(this.getContext(),
                 listLayoutManager.getOrientation()));
-        mCurShownDate = new Date(System.currentTimeMillis());
+
+
+        mCurShownDate = dtFormat.format(mCalendar.getTime());
 
         // Save the event listener's behavior.
         mTaskEventListener = new ChildEventListener() { // TODO: Move this to a single object
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Task newTask = dataSnapshot.getValue(Task.class);
-                if (newTask.getEnd_date() >= mCurShownDate.getTime()) {
+                if (newTask.getDate() != mCurShownDate) {
                     mTaskList.add(newTask);
                 }
 
@@ -157,16 +164,17 @@ public class TasksFragment extends Fragment {
                 .getReference("user_collections/"
                         + FirebaseAuth.getInstance().getCurrentUser().getUid()
                         + "/tasks");
-        mDatesRef.orderByChild("start_date")
-                .endAt(mCurShownDate.getTime())
+        mDatesRef.orderByChild("date").equalTo(mCurShownDate)
                 .addChildEventListener(mTaskEventListener);
 
         // Set the onClick event for the new task activity.
         mFABNewTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TasksFragment.this.getContext(), NewTaskActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(TasksFragment.this.getContext(), NewTaskActivity.class);
+//                startActivity(intent);
+                NewTaskBottomSheetDialog bottomSheet = new NewTaskBottomSheetDialog();
+                bottomSheet.show(getFragmentManager(), "newTaskBottomSheet");
             }
         });
 
@@ -180,13 +188,10 @@ public class TasksFragment extends Fragment {
         final DatePickerDialog.OnDateSetListener curDateListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                mCalendar.set(Calendar.YEAR, year);
-                mCalendar.set(Calendar.MONTH, month);
-                mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                mCurShownDate = mCalendar.getTime();
+                mCalendar.set(year, month, dayOfMonth, 0, 0, 0);
+                mCurShownDate = dtFormat.format(mCalendar.getTime());
                 mTaskList.clear();
-                mDatesRef.orderByChild("start_date")
-                        .endAt(mCurShownDate.getTime())
+                mDatesRef.orderByChild("date").equalTo(mCurShownDate)
                         .addChildEventListener(mTaskEventListener);
             }
         };
@@ -228,6 +233,16 @@ public class TasksFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) getContext().getSystemService(
+                        getView().getContext().INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                getView().getWindowToken(), 0);
+    }
+
     private void setUserUpdateBehaviour() {
         ValueEventListener accountEventListener = new ValueEventListener() {
 
@@ -251,7 +266,7 @@ public class TasksFragment extends Fragment {
 
     private void handleStreakColoring(Account account) {
         Date today = new Date(); // TODO: delete this var if it isn't needed.
-        float daysDiff = (new Date().getTime() - account.getLastActiveDate()) / (1000 * 3600 * 24);
+        float daysDiff = (today.getTime() - account.getLastActiveDate()) / (1000 * 3600 * 24);
 
         // If the last active date is today, make the TextView and Image appear colored.
         // Otherwise, grey them out.

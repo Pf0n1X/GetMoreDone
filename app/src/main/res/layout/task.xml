@@ -53,6 +53,7 @@
         <CheckBox
             android:id="@+id/checkBox"
             android:checked="@{task.is_done}"
+            android:enabled="@{!task.is_done}"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_alignParentTop="true"

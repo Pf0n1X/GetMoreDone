@@ -34,21 +34,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pf0n1x.getmoredone.MainActivity" />
         </activity>
-        <activity
-            android:name=".NewTaskActivity"
-            android:label="New Task"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-            <!-- Use a text element -->
-        </activity>
+        <!--<activity-->
+        <!--android:name=".NewTaskActivity"-->
+        <!--android:label="New Task"-->
+        <!--android:parentActivityName=".MainActivity"-->
+        <!--android:theme="@style/AppTheme.NoActionBar">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.PARENT_ACTIVITY"-->
+        <!--android:value=".MainActivity" />-->
+        <!--&lt;!&ndash; Use a text element &ndash;&gt;-->
+        <!--</activity>-->
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.DEFAULT" />
+                <action android:name="android.intent.action.BROWSABLE" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

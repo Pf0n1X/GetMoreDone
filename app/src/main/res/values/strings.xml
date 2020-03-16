@@ -28,7 +28,26 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="settings">Settings</string>
-    <string name="icons8_about_text"><![CDATA[<a target=_blank href=https://icons8.com/icons/set/checked>Checked</a>, <a target=_blank href=https://icons8.com/icons/set/calendar>Calendar</a> and other icons by <a target=_blank href=https://icons8.com>Icons8</a>]]></string>
+    <string name="icons8_about_text">The app was made by Tomer Erusalimsky.\n\n
+It was inspired by a belief that the competitive nature of humankind\n
+can help humans achieve more in their day-to-day lives.\n\n
+
+Please use it to enrich your life and make the most out of your day.\n
+Your time on this earth is limited, use every second of it wisely. :)\n\n
+
+I would like to give thanks to the people who created many\n
+of the assets that are used within this app:\n\n
+
+The beautiful icons were provided by "Icons8".\n
+You can check their site <a href="https://icons8.com">here</a>.\n
+The amazing "Ta Da" sound was take from "SoundBible".\n
+Please pay them a visit <a href="http://soundbible.com">here</a>.\n
+The absolutely gorgeous and intuitive ProgressView was made by
+"skydoves".\n
+You can see his work <a href="https://github.com/skydoves">here</a>.\n
+And last, but, not least - the engaging and cute "LottieAlertDialog" was made by "Mayuce".\n
+You can check him out "<a href="https://www.linkedin.com/in/mayuce/">here</a>".\n
+</string>
     <string name="store_item_streak_freeze_title">Streak Freeze</string>
     <string name="store_item_streak_freeze_desc">Streak Freeze allows your streak to remain in place for one full day of inactivity.</string>
     <string name="store_item_wager_title">Double Or Nothing</string>

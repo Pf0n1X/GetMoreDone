@@ -2,27 +2,24 @@ package com.pf0n1x.getmoredone;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.labters.lottiealertdialoglibrary.DialogTypes;
+import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
 import com.pf0n1x.getmoredone.entities.Task;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -34,7 +31,7 @@ public class NewTaskBottomSheetDialog extends BottomSheetDialogFragment {
     private Button mSaveButton;
     private Button mDateButton;
     private String mTaskDate;
-    private View mCurView;
+    private View mCurView; // TODO: Delete if not needed.
 
     // Constant Members
     final Calendar mCalendar = Calendar.getInstance();
@@ -100,18 +97,26 @@ public class NewTaskBottomSheetDialog extends BottomSheetDialogFragment {
                                 + FirebaseAuth.getInstance().getCurrentUser().getUid()
                                 + "/tasks");
 
-        DatabaseReference newTaskRef = dbRef.push();
-        newTaskRef.setValue(new Task(
-                newTaskRef.getKey(),
-                mTitleEditText.getText().toString(),
-                FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                mDescriptionEditText.getText().toString(),
-                System.currentTimeMillis(),
-                mTaskDate,
-                false));
+        if (mTitleEditText.length() == 0) {
+            new LottieAlertDialog.Builder(getContext(), DialogTypes.TYPE_ERROR)
+                    .setTitle("Oops...") // TODO: Extract text resource
+                    .setDescription("You might have forgot to add a title to your task.") // TODO: Extract text resource
+                    .build()
+                    .show();
+        } else {
+            DatabaseReference newTaskRef = dbRef.push();
+            newTaskRef.setValue(new Task(
+                    newTaskRef.getKey(),
+                    mTitleEditText.getText().toString(),
+                    FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                    mDescriptionEditText.getText().toString(),
+                    System.currentTimeMillis(),
+                    mTaskDate,
+                    false));
 
-        // Return to the previous activity.
-        dismiss();
+            // Return to the previous activity.
+            dismiss();
+        }
     }
 
     public void onClickDateButton(View view) {

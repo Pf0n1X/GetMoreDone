@@ -69,7 +69,7 @@ public class TasksFragment extends Fragment {
             .getReference("users").child(FirebaseAuth.getInstance()
                     .getCurrentUser().getUid());
 
-    // TODO: Split this methhod to many sub methods
+    // TODO: Split this method to many sub methods
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -78,8 +78,8 @@ public class TasksFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
 
         // Save the progress view.
-        mProgressView = view.findViewById(R.id.progressViewTasks); // TODO: Define a setter
-        mFABNewTask = view.findViewById(R.id.fab_new_task); // TODO: Define a setter
+        mProgressView = view.findViewById(R.id.progressViewTasks); //
+        mFABNewTask = view.findViewById(R.id.fab_new_task); //
         mStreakTextView = view.findViewById(R.id.textview_streak);
         mMoneyTextView = view.findViewById(R.id.textview_money);
         mStreakImageView = view.findViewById(R.id.imageview_streak);
@@ -104,6 +104,8 @@ public class TasksFragment extends Fragment {
                 Task newTask = dataSnapshot.getValue(Task.class);
                 if (newTask.getDate() != mCurShownDate) {
                     mTaskList.add(newTask);
+                    Collections.sort(mTaskList);
+                    mAdapter.setTasks(mTaskList);
                 }
 
                 // Get the current progress
@@ -119,8 +121,6 @@ public class TasksFragment extends Fragment {
 
                 mProgressView.setProgress(progress);
                 mProgressView.setLabelText(progress + "/" + mTaskList.size());
-                Collections.sort(mTaskList);
-                mAdapter.setTasks(mTaskList);
             }
 
             @Override
